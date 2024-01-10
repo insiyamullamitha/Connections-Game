@@ -4,32 +4,57 @@
     <meta charset="utf-8" />
     <title>Connections Game</title>
     <link rel="stylesheet" href="connections.css" />
-    <script rel="text/javascript" src="connections.js"></script>
+    <script src="connections.js"></script>
   </head>
   <body>
     <div class="container">
-      <h1>Connections Game</h1>
-      <div class="timer">Timer: 0</div>
-      <div class="words-grid">
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
-        <div class="word">word</div>
+      <div class="header">
+        <h1>Connections Game</h1>
       </div>
-      <div class="mistakes">Mistakes: 5</div>
-      <button id="reset">Reset</button>
+      <div class="description">Group 4 related words into 4 groups.</div>
+      <div class="timer">Timer: 0</div>
+      <div class="words-grid" id="wordsGrid"></div>
+      <div class="mistakes">Mistakes remaining: 5</div>
+      <div class="buttons">
+        <button class="button" id="newgame">New Game</button>
+        <button class="button" id="submit">Submit</button>
+        <button class="button" id="shuffle">Shuffle</button>
+      </div>
     </div>
+    <script>
+      const wordsArray = [
+        "apple",
+        "banana",
+        "orange",
+        "grape",
+        "melon",
+        "kiwi",
+        "pear",
+        "peach",
+        "plum",
+        "strawberry",
+        "blueberry",
+        "raspberry",
+        "blackberry",
+        "pineapple",
+        "mango",
+        "watermelon",
+      ];
+
+      function populateGrid() {
+        const wordsGrid = document.getElementById("wordsGrid");
+        wordsGrid.innerHTML = "";
+
+        for (let i = 0; i < 16; i++) {
+          const wordDiv = document.createElement("div");
+          wordDiv.classList.add("word");
+          wordDiv.addEventListener("click", selectWord);
+          wordDiv.textContent = wordsArray[i];
+          wordsGrid.appendChild(wordDiv);
+        }
+      }
+
+      populateGrid();
+    </script>
   </body>
 </html>
