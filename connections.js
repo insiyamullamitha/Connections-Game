@@ -1,7 +1,7 @@
-let totalSeconds = 0;
 let mistakesRemaining = 5;
 let usedWords = [];
 let intervalId;
+let totalSeconds = 0;
 
 categoryWords = {
   "Things That Smell Nice": ["candle", "bathsalts", "baking", "coffee"],
@@ -17,57 +17,6 @@ let getWordsFromCategories = () => {
   }
   return words;
 };
-
-const saveGameState = () => {
-  const gameState = {
-    words: words.map((word) => ({
-      content: word.textContent,
-      active: word.classList.contains("word-active"),
-    })),
-    elapsedSeconds: totalSeconds,
-    mistakesRemaining: mistakesRemaining,
-    rowsAchieved: Array.from(document.querySelectorAll(".row")).map(
-      (row) => row.textContent
-    ),
-  };
-
-  localStorage.setItem("gameState", JSON.stringify(gameState));
-};
-
-// Function to load game state from localStorage
-const loadGameState = () => {
-  const savedGameState = localStorage.getItem("gameState");
-  if (savedGameState) {
-    const gameState = JSON.parse(savedGameState);
-
-    // Restore words and their positions
-    gameState.words.forEach((wordState, index) => {
-      const word = document.querySelector(`.word:nth-child(${index + 1})`);
-      word.textContent = wordState.content;
-      if (wordState.active) {
-        word.classList.add("word-active");
-      }
-    });
-
-    // Restore elapsed time
-    totalSeconds = gameState.elapsedSeconds;
-    document.getElementById("seconds").innerHTML = pad(totalSeconds % 60);
-    document.getElementById("minutes").innerHTML = pad(
-      parseInt(totalSeconds / 60)
-    );
-
-    // Restore rows achieved
-    gameState.rowsAchieved.forEach((category) => {
-      const newRow = document.createElement("div");
-      newRow.classList.add("row");
-      newRow.textContent = category;
-      document.getElementById("rowsContainer").appendChild(newRow);
-    });
-  }
-};
-
-// Call loadGameState on page load
-window.onload = loadGameState;
 
 const getWords = () => {
   const wordsGrid = document.getElementById("wordsGrid");
@@ -89,7 +38,6 @@ selectWord = (event) => {
   } else if (document.querySelectorAll(".word-active").length < 4) {
     target.classList.add("word-active");
   }
-  saveGameState();
 };
 
 const submitGroup = () => {
@@ -116,7 +64,6 @@ const submitGroup = () => {
       }
     }
   }
-  saveGameState();
 };
 
 const startTimer = () => {
@@ -131,11 +78,12 @@ const startTimer = () => {
     ++totalSeconds;
     seconds.innerHTML = pad(totalSeconds % 60);
     minutes.innerHTML = pad(parseInt(totalSeconds / 60));
-    saveGameState();
   }, 1000);
 
   return intervalId;
 };
+
+startTimer();
 
 const stopTimer = () => {
   clearInterval(intervalId);
@@ -179,7 +127,6 @@ const winGroup = (selectedWords, category) => {
     stopTimer();
     usedWords = [];
   }
-  saveGameState();
 };
 
 const displayMistakes = () => {
@@ -191,7 +138,6 @@ const displayMistakes = () => {
     dot.classList.add("mistake-dot");
     mistakesContainer.appendChild(dot);
   }
-  saveGameState();
 };
 
 const shuffleWords = () => {
@@ -214,7 +160,6 @@ const shuffleWords = () => {
 };
 
 const newGame = () => {
-  totalSeconds = 0;
   mistakesRemaining = 5;
   usedWords = [];
   let rowsContainer = document.getElementById("rowsContainer");
@@ -222,15 +167,14 @@ const newGame = () => {
     rowsContainer.innerHTML = "";
   }
   stopTimer();
-  startTimer();
+  totalSeconds = 0;
   shuffleWords();
   getWords();
   displayMistakes();
-  saveGameState();
+  startTimer();
 };
 
 getWordsFromCategories();
-loadGameState();
 shuffleWords();
 getWords();
 displayMistakes();
