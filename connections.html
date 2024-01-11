@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="connections.css" />
     <script src="connections.js"></script>
   </head>
-  <body onload="startTimer(); displayMistakes();">
+  <body>
     <div class="container">
       <div class="header">
         <h1>
@@ -24,13 +24,18 @@
       <div class="timer">
         <p><span id="minutes">00</span>:<span id="seconds">00</span></p>
       </div>
-      <div class="words-grid" id="wordsGrid"></div>
+      <div class="rows-container" id="rowsContainer"></div>
+      <div class="words-grid" id="wordsGrid">
+        <script>
+          shuffleWords();
+        </script>
+      </div>
       <div class="mistakes-container">
         <div class="mistakes-remaining">Mistakes remaining:&nbsp;</div>
         <span class="mistakes"></span>
       </div>
       <div class="buttons">
-        <button class="button" id="newgame" onclick="shuffleWords()">
+        <button class="button" id="newgame" onclick="newGame()">
           New Game
         </button>
         <button class="button" id="submit" onclick="submitGroup()">
@@ -40,11 +45,6 @@
           Shuffle
         </button>
       </div>
-    </div>
-    <div class="words-grid" id="wordsGrid">
-      <script>
-        shuffleWords();
-      </script>
     </div>
   </body>
 </html>
