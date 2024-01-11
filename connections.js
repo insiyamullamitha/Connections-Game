@@ -1,5 +1,6 @@
 let mistakesRemaining = 5;
 let usedWords = [];
+let repeatedCombinations = [];
 let intervalId;
 let totalSeconds = 0;
 
@@ -56,9 +57,20 @@ const submitGroup = () => {
       winGroup(wordsArray, firstWordCategory);
       usedWords = usedWords.concat(wordsArray.map((word) => word.textContent));
     } else {
-      mistakesRemaining--;
-      displayMistakes();
-      alert("Incorrect guess, please try again");
+      const combination = [];
+      wordsArray.forEach((word) => {
+        combination.push(word.textContent);
+      });
+      combination.sort();
+      const combinationString = combination.join(",");
+      if (repeatedCombinations.includes(combinationString)) {
+        alert("You have already tried this combination of words");
+      } else {
+        repeatedCombinations.push(combinationString);
+        mistakesRemaining--;
+        displayMistakes();
+        alert("Incorrect guess, please try again");
+      }
       if (mistakesRemaining === 0) {
         alert("Game over!");
       }
@@ -162,6 +174,7 @@ const shuffleWords = () => {
 const newGame = () => {
   mistakesRemaining = 5;
   usedWords = [];
+  repeatedCombinations = [];
   let rowsContainer = document.getElementById("rowsContainer");
   if (rowsContainer) {
     rowsContainer.innerHTML = "";
