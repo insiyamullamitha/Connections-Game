@@ -30,47 +30,21 @@
         <span class="mistakes"></span>
       </div>
       <div class="buttons">
-        <button class="button" id="newgame">New Game</button>
+        <button class="button" id="newgame" onclick="shuffleWords()">
+          New Game
+        </button>
         <button class="button" id="submit" onclick="submitGroup()">
           Submit
         </button>
-        <button class="button" id="shuffle">Shuffle</button>
+        <button class="button" id="shuffle" onclick="shuffleWords()">
+          Shuffle
+        </button>
       </div>
     </div>
-    <script>
-      const wordsArray = [
-        "apple",
-        "banana",
-        "orange",
-        "grape",
-        "melon",
-        "kiwi",
-        "pear",
-        "peach",
-        "plum",
-        "strawberry",
-        "blueberry",
-        "raspberry",
-        "blackberry",
-        "pineapple",
-        "mango",
-        "watermelon",
-      ];
-
-      function populateGrid() {
-        const wordsGrid = document.getElementById("wordsGrid");
-        wordsGrid.innerHTML = "";
-
-        for (let i = 0; i < 16; i++) {
-          const wordDiv = document.createElement("div");
-          wordDiv.classList.add("word");
-          wordDiv.addEventListener("click", selectWord);
-          wordDiv.textContent = wordsArray[i];
-          wordsGrid.appendChild(wordDiv);
-        }
-      }
-
-      populateGrid();
-    </script>
+    <div class="words-grid" id="wordsGrid">
+      <script>
+        shuffleWords();
+      </script>
+    </div>
   </body>
 </html>

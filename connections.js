@@ -1,3 +1,34 @@
+categoryWords = {
+  "Things That Smell Nice": ["candle", "bathsalts", "baking", "coffee"],
+  "Origami Items": ["crane", "box", "swan", "flower"],
+  "Period of Time": ["era", "decade", "stretch", "seconds"],
+  "Red ___": ["carpet", "flag", "bull", "handed"],
+};
+
+let getWordsFromCategories = () => {
+  words = [];
+  for (const key in categoryWords) {
+    words = words.concat(categoryWords[key]);
+  }
+  return words;
+};
+
+let mistakesRemaining = 5;
+getWordsFromCategories();
+
+const getWords = () => {
+  const wordsGrid = document.getElementById("wordsGrid");
+  wordsGrid.innerHTML = "";
+
+  for (const word of words) {
+    const wordContainer = document.createElement("div");
+    wordContainer.classList.add("word");
+    wordContainer.textContent = word;
+    wordContainer.addEventListener("click", selectWord);
+    wordsGrid.appendChild(wordContainer);
+  }
+};
+
 selectWord = (event) => {
   const target = event.target;
   if (target.classList.contains("word-active")) {
@@ -10,10 +41,30 @@ selectWord = (event) => {
 const submitGroup = () => {
   const words = document.querySelectorAll(".word-active");
   if (words.length === 4) {
-    words.forEach((word) => {
-      word.classList.remove("word-active");
-    });
-    mergeIntoRectangle(words);
+    const firstWordCategory = Object.keys(categoryWords).find((key) =>
+      categoryWords[key].includes(words[0].textContent)
+    );
+
+    const wordsArray = Array.from(words);
+
+    const hasSameCategory = wordsArray.every((word) =>
+      categoryWords[firstWordCategory].includes(word.textContent)
+    );
+
+    if (hasSameCategory) {
+      //remove word from class list
+      wordsArray.forEach((word) => {
+        word.classList.remove("word-active");
+      });
+      mergeIntoRectangle(wordsArray);
+    } else {
+      mistakesRemaining--;
+      displayMistakes();
+      alert("Incorrect guess, please try again");
+      if (mistakesRemaining === 0) {
+        alert("Game over!");
+      }
+    }
   }
 };
 
@@ -56,8 +107,6 @@ const mergeIntoRectangle = (selectedWords) => {
   wordsGrid.insertBefore(rectangleContainer, wordsGrid.firstChild);
 };
 
-let mistakesRemaining = 5;
-
 const displayMistakes = () => {
   const mistakesContainer = document.querySelector(".mistakes");
   mistakesContainer.innerHTML = ""; // Clear previous content
@@ -67,4 +116,14 @@ const displayMistakes = () => {
     dot.classList.add("mistake-dot");
     mistakesContainer.appendChild(dot);
   }
+};
+
+const shuffleWords = () => {
+  for (var i = words.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = words[i];
+    words[i] = words[j];
+    words[j] = temp;
+  }
+  getWords();
 };
