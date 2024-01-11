@@ -33,6 +33,9 @@ body {
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 2.5rem;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: hotpink;
+  color: lightpink;
 }
 
 .container .description {
