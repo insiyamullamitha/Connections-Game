@@ -2,17 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Connections Game</title>
+    <title class="fa-duotone fa-grid">>Connections Game</title>
+    <script
+      src="https://kit.fontawesome.com/15c7db0259.js"
+      crossorigin="anonymous"
+    ></script>
     <link rel="stylesheet" href="connections.css" />
     <script src="connections.js"></script>
   </head>
-  <body>
+  <body onload="startTimer()">
     <div class="container">
       <div class="header">
-        <h1>Connections Game</h1>
+        <h1><i class="fa-solid fa-border-all"></i> Connections Game</h1>
       </div>
       <div class="description">Group 4 related words into 4 groups.</div>
-      <div class="timer">Timer: 0</div>
+      <div class="timer">
+        <p><span id="minutes">00</span>:<span id="seconds">00</span></p>
+      </div>
       <div class="words-grid" id="wordsGrid"></div>
       <div class="mistakes">Mistakes remaining: 5</div>
       <div class="buttons">

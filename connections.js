@@ -10,3 +10,19 @@ const selectWord = (event) => {
     target.classList.add("word-active");
   }
 };
+
+const startTimer = () => {
+  const minutes = document.getElementById("minutes");
+  const seconds = document.getElementById("seconds");
+  let totalSeconds = 0;
+
+  const pad = (num) => {
+    return num < 10 ? "0" + num : num;
+  };
+
+  setInterval(() => {
+    ++totalSeconds;
+    seconds.innerHTML = pad(totalSeconds % 60);
+    minutes.innerHTML = pad(parseInt(totalSeconds / 60));
+  }, 1000);
+};
