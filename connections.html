@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="connections.css" />
     <script src="connections.js"></script>
   </head>
-  <body onload="startTimer()">
+  <body onload="startTimer(); displayMistakes();">
     <div class="container">
       <div class="header">
         <h1><i class="fa-solid fa-border-all"></i> Connections Game</h1>
@@ -20,10 +20,15 @@
         <p><span id="minutes">00</span>:<span id="seconds">00</span></p>
       </div>
       <div class="words-grid" id="wordsGrid"></div>
-      <div class="mistakes">Mistakes remaining: 5</div>
+      <div class="mistakes-container">
+        <div class="mistakes-remaining">Mistakes remaining:&nbsp;</div>
+        <span class="mistakes"></span>
+      </div>
       <div class="buttons">
         <button class="button" id="newgame">New Game</button>
-        <button class="button" id="submit">Submit</button>
+        <button class="button" id="submit" onclick="submitGroup()">
+          Submit
+        </button>
         <button class="button" id="shuffle">Shuffle</button>
       </div>
     </div>

@@ -1,4 +1,3 @@
-/* import Roboto font */
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap");
 
 body {
@@ -92,7 +91,7 @@ body {
   background-color: hotpink;
 }
 
-.container .mistakes {
+.container .mistakes-remaining {
   font-size: 1.2rem;
 }
 
@@ -121,4 +120,23 @@ body {
 .container .buttons .button:hover {
   transform: scale(1.2);
   background-color: hotpink;
+}
+
+.mistakes {
+  font-size: 1.1rem;
+}
+
+.mistake-dot {
+  width: 12px;
+  height: 12px;
+  background-color: hotpink;
+  border-radius: 50%;
+  margin-right: 5px;
+  display: inline-block;
+}
+
+.mistakes-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
