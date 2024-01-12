@@ -72,7 +72,6 @@ const submitGroup = () => {
         repeatedCombinations.push(combinationString);
         mistakesRemaining--;
         displayMistakes();
-        alert("Incorrect guess, please try again");
       }
       if (mistakesRemaining === 0) {
         alert("Game over!");
@@ -94,6 +93,8 @@ const submitGroup = () => {
 
         grid = document.getElementById("wordsGrid");
         grid.style.display = "none";
+      } else {
+        alert("Incorrect guess, please try again");
       }
     }
   }
@@ -125,7 +126,10 @@ const stopTimer = () => {
 const winGroup = (selectedWords, category) => {
   selectedWords.forEach((word) => {
     word.classList.remove("word-active");
-    word.style.display = "none";
+    word.classList.add("word-float-up");
+    setTimeout(() => {
+      word.style.display = "none";
+    }, 500);
     word.removeEventListener("click", selectWord);
   });
   const categoryIndex = Object.keys(categoryWords).findIndex(

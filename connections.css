@@ -204,3 +204,19 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+@keyframes floatToRow {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px); /* Adjust the distance each word moves */
+  }
+}
+
+.word-float-up {
+  animation: floatToRow 0.5s ease-in-out forwards;
+  animation-fill-mode: forwards;
+}
