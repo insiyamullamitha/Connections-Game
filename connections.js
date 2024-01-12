@@ -3,6 +3,7 @@ let usedWords = [];
 let repeatedCombinations = [];
 let intervalId;
 let totalSeconds = 0;
+let playing = true;
 
 categoryWords = {
   "Things That Smell Nice": ["candle", "bathsalts", "baking", "coffee"],
@@ -34,10 +35,12 @@ const getWords = () => {
 
 selectWord = (event) => {
   const target = event.target;
-  if (target.classList.contains("word-active")) {
-    target.classList.remove("word-active");
-  } else if (document.querySelectorAll(".word-active").length < 4) {
-    target.classList.add("word-active");
+  if (playing) {
+    if (target.classList.contains("word-active")) {
+      target.classList.remove("word-active");
+    } else if (document.querySelectorAll(".word-active").length < 4) {
+      target.classList.add("word-active");
+    }
   }
 };
 
@@ -73,6 +76,20 @@ const submitGroup = () => {
       }
       if (mistakesRemaining === 0) {
         alert("Game over!");
+        stopTimer();
+        playing = false;
+        const rows = document.querySelectorAll(".row");
+        rows.forEach((row) => {
+          const categoryIndex = row.id.split("-")[1];
+          const category = Object.keys(categoryWords)[categoryIndex];
+          const categoryWordsArray = categoryWords[category];
+
+          row.style.display = "flex";
+          row.textContent = `${category}: ${categoryWordsArray.join(", ")}`;
+        });
+
+        grid = document.getElementById("wordsGrid");
+        grid.style.display = "none";
       }
     }
   }
@@ -111,33 +128,15 @@ const winGroup = (selectedWords, category) => {
     (key) => key === category
   );
 
-  let rowsContainer = document.getElementById("rowsContainer");
-  if (!rowsContainer) {
-    rowsContainer = document.createElement("div");
-    rowsContainer.id = "rowsContainer";
-    document.body.appendChild(rowsContainer);
-  }
+  const row = document.getElementById("row-" + categoryIndex);
+  row.style.display = "flex";
+  row.textContent =
+    category + ": " + selectedWords.map((word) => word.textContent).join(", ");
 
-  const newRow = document.createElement("div");
-  newRow.classList.add("row");
-
-  if (categoryIndex === 0) {
-    newRow.style.backgroundColor = "#F5E07E";
-  } else if (categoryIndex === 1) {
-    newRow.style.backgroundColor = "#A7C268";
-  } else if (categoryIndex === 2) {
-    newRow.style.backgroundColor = "#B4C3EB";
-  } else if (categoryIndex === 3) {
-    newRow.style.backgroundColor = "#B283C1";
-  }
-
-  newRow.textContent = category;
-  rowsContainer.appendChild(newRow);
-
-  if (rowsContainer.children.length === 4) {
+  if (usedWords.length === words.length) {
     alert("You win!");
     stopTimer();
-    usedWords = [];
+    playing = false;
   }
 };
 
@@ -174,11 +173,14 @@ const shuffleWords = () => {
 const newGame = () => {
   mistakesRemaining = 5;
   usedWords = [];
+  playing = true;
   repeatedCombinations = [];
-  let rowsContainer = document.getElementById("rowsContainer");
-  if (rowsContainer) {
-    rowsContainer.innerHTML = "";
-  }
+  let rows = document.querySelectorAll(".row");
+  rows.forEach((row) => {
+    row.style.display = "none";
+  });
+  let grid = document.getElementById("wordsGrid");
+  grid.style.display = "grid";
   stopTimer();
   totalSeconds = 0;
   shuffleWords();

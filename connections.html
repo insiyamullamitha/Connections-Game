@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title class="fa-duotone fa-grid">Connections</title>
+    <title>Connections</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <script
       src="https://kit.fontawesome.com/15c7db0259.js"
@@ -23,7 +23,12 @@
       <div class="timer">
         <p><span id="minutes">00</span>:<span id="seconds">00</span></p>
       </div>
-      <div class="rows-container" id="rowsContainer"></div>
+      <div class="rows-container" id="rowsContainer">
+        <div class="row" id="row-0" style="display: none"></div>
+        <div class="row" id="row-1" style="display: none"></div>
+        <div class="row" id="row-2" style="display: none"></div>
+        <div class="row" id="row-3" style="display: none"></div>
+      </div>
       <div class="words-grid" id="wordsGrid">
         <script>
           shuffleWords();

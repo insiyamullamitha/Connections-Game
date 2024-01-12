@@ -75,7 +75,6 @@ body {
 }
 
 .container .row {
-  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
@@ -89,8 +88,23 @@ body {
   padding: 10px;
   box-sizing: border-box;
   height: 90px;
-  float: left;
   width: 560px;
+}
+
+.container #row-0 {
+  background-color: #f5e07e;
+}
+
+.container #row-1 {
+  background-color: #a7c268;
+}
+
+.container #row-2 {
+  background-color: #b4c3eb;
+}
+
+.container #row-3 {
+  background-color: #b283c1;
 }
 
 .container .words-grid {
