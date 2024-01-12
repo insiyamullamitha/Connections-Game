@@ -4,15 +4,23 @@ let repeatedCombinations = [];
 let intervalId;
 let totalSeconds = 0;
 let playing = true;
+let words = [];
 
-categoryWords = {
+const categoryWords = {
   "Topic of Discussion": ["issue", "matter", "point", "subject"],
   "Origami Items": ["crane", "box", "swan", "flower"],
   "Period of Time": ["era", "phase", "stretch", "seconds"],
   "Red ___": ["carpet", "flag", "bull", "handed"],
 };
 
-let getWordsFromCategories = () => {
+const initialiseGame = () => {
+  getWordsFromCategories();
+  shuffleWords();
+  getWords();
+  displayMistakes();
+};
+
+const getWordsFromCategories = () => {
   words = [];
   for (const key in categoryWords) {
     words = words.concat(categoryWords[key]);
@@ -23,17 +31,21 @@ let getWordsFromCategories = () => {
 const getWords = () => {
   const wordsGrid = document.getElementById("wordsGrid");
   wordsGrid.innerHTML = "";
-
   for (const word of words) {
-    const wordContainer = document.createElement("div");
-    wordContainer.classList.add("word");
-    wordContainer.textContent = word;
-    wordContainer.addEventListener("click", selectWord);
+    const wordContainer = createWordContainer(word);
     wordsGrid.appendChild(wordContainer);
   }
 };
 
-selectWord = (event) => {
+const createWordContainer = (word) => {
+  const wordContainer = document.createElement("div");
+  wordContainer.classList.add("word");
+  wordContainer.textContent = word;
+  wordContainer.addEventListener("click", selectWord);
+  return wordContainer;
+};
+
+const selectWord = (event) => {
   const target = event.target;
   if (playing) {
     if (target.classList.contains("word-active")) {
@@ -50,54 +62,52 @@ const submitGroup = () => {
     const firstWordCategory = Object.keys(categoryWords).find((key) =>
       categoryWords[key].includes(words[0].textContent)
     );
-
     const wordsArray = Array.from(words);
     const hasSameCategory = wordsArray.every((word) =>
       categoryWords[firstWordCategory].includes(word.textContent)
     );
-
     if (hasSameCategory) {
-      winGroup(wordsArray, firstWordCategory);
       usedWords = usedWords.concat(wordsArray.map((word) => word.textContent));
+      winGroup(wordsArray, firstWordCategory);
     } else {
-      const combination = [];
-      wordsArray.forEach((word) => {
-        combination.push(word.textContent);
-      });
-      combination.sort();
-      const combinationString = combination.join(",");
-      if (repeatedCombinations.includes(combinationString)) {
-        alert("You have already tried this combination of words");
-      } else {
-        repeatedCombinations.push(combinationString);
-        mistakesRemaining--;
-        displayMistakes();
-      }
-      if (mistakesRemaining === 0) {
-        alert("Game over!");
-        stopTimer();
-        playing = false;
-        const rows = document.querySelectorAll(".row");
-        rows.forEach((row) => {
-          const categoryIndex = row.id.split("-")[1];
-          const category = Object.keys(categoryWords)[categoryIndex];
-          const categoryWordsArray = categoryWords[category];
-
-          // change category name and category word div text contents
-          row.style.display = "flex";
-          let categoryName = row.children[0];
-          categoryName.textContent = category;
-          let categoryWordsDiv = row.children[1];
-          categoryWordsDiv.textContent = categoryWordsArray.join(", ");
-        });
-
-        grid = document.getElementById("wordsGrid");
-        grid.style.display = "none";
-      } else {
-        alert("Incorrect guess, please try again");
-      }
+      handleIncorrectGuess(wordsArray);
     }
   }
+};
+
+const handleIncorrectGuess = (wordsArray) => {
+  const combination = wordsArray.map((word) => word.textContent).sort();
+  const combinationString = combination.join(",");
+  if (repeatedCombinations.includes(combinationString)) {
+    alert("You have already tried this combination of words");
+  } else {
+    repeatedCombinations.push(combinationString);
+    mistakesRemaining--;
+    displayMistakes();
+
+    if (mistakesRemaining === 0) {
+      endGame("Game over!");
+    } else {
+      alert("Incorrect guess, please try again");
+    }
+  }
+};
+
+const endGame = (message) => {
+  alert(message);
+  stopTimer();
+  playing = false;
+  if (message === "Game over!") {
+    const rows = document.querySelectorAll(".row");
+    rows.forEach((row) => {
+      const categoryIndex = row.id.split("-")[1];
+      const category = Object.keys(categoryWords)[categoryIndex];
+      const categoryWordsArray = categoryWords[category];
+      revealRow(category, categoryWordsArray);
+    });
+  }
+  grid = document.getElementById("wordsGrid");
+  grid.style.display = "none";
 };
 
 const startTimer = () => {
@@ -132,28 +142,23 @@ const winGroup = (selectedWords, category) => {
     }, 500);
     word.removeEventListener("click", selectWord);
   });
-  const categoryIndex = Object.keys(categoryWords).findIndex(
-    (key) => key === category
-  );
+  let selectedWordsArray = selectedWords.map((word) => word.textContent);
+  revealRow(category, selectedWordsArray);
+  checkGameWin();
+};
 
-  const row = document.getElementById("row-" + categoryIndex);
-  row.style.display = "flex";
-  let categoryName = row.children[0];
-  categoryName.textContent = category;
-  let categoryWordsDiv = row.children[1];
-  let wordTexts = Array.from(selectedWords).map((word) => word.textContent);
-  categoryWordsDiv.textContent = wordTexts.join(", ");
-
+const checkGameWin = () => {
+  console.log(usedWords.length, words.length);
   if (usedWords.length === words.length) {
-    alert("You win!");
     stopTimer();
     playing = false;
+    endGame("You win!");
   }
 };
 
 const displayMistakes = () => {
   const mistakesContainer = document.querySelector(".mistakes");
-  mistakesContainer.innerHTML = ""; // Clear previous content
+  mistakesContainer.innerHTML = "";
 
   for (let i = 0; i < mistakesRemaining; i++) {
     const dot = document.createElement("div");
@@ -163,21 +168,14 @@ const displayMistakes = () => {
 };
 
 const shuffleWords = () => {
-  // Filter out words that have been submitted
   const remainingWords = words.filter((word) => !usedWords.includes(word));
-
-  // Shuffle the remaining words
   for (let i = remainingWords.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
     let temp = remainingWords[i];
     remainingWords[i] = remainingWords[j];
     remainingWords[j] = temp;
   }
-
-  // Take the first 16 (or however many you want) unique words for the grid
   words = [...new Set(remainingWords.slice(0, 16))];
-
-  // Update the grid with the new set of words
   getWords();
 };
 
@@ -194,13 +192,20 @@ const newGame = () => {
   grid.style.display = "grid";
   stopTimer();
   totalSeconds = 0;
-  shuffleWords();
-  getWords();
-  displayMistakes();
+  initialiseGame();
   startTimer();
 };
 
-getWordsFromCategories();
-shuffleWords();
-getWords();
-displayMistakes();
+const revealRow = (category, selectedWords) => {
+  const categoryIndex = Object.keys(categoryWords).findIndex(
+    (key) => key === category
+  );
+  const row = document.getElementById("row-" + categoryIndex);
+  row.style.display = "flex";
+  let categoryName = row.children[0];
+  categoryName.textContent = category;
+  let categoryWordsDiv = row.children[1];
+  categoryWordsDiv.textContent = selectedWords.join(", ");
+};
+
+initialiseGame();
