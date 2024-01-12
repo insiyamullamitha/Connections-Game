@@ -107,6 +107,10 @@ body {
   background-color: #b283c1;
 }
 
+.container .row .category-name {
+  font-weight: 900;
+}
+
 .container .words-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

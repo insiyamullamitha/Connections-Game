@@ -6,9 +6,9 @@ let totalSeconds = 0;
 let playing = true;
 
 categoryWords = {
-  "Things That Smell Nice": ["candle", "bathsalts", "baking", "coffee"],
+  "Topic of Discussion": ["issue", "matter", "point", "subject"],
   "Origami Items": ["crane", "box", "swan", "flower"],
-  "Period of Time": ["era", "decade", "stretch", "seconds"],
+  "Period of Time": ["era", "phase", "stretch", "seconds"],
   "Red ___": ["carpet", "flag", "bull", "handed"],
 };
 
@@ -84,8 +84,12 @@ const submitGroup = () => {
           const category = Object.keys(categoryWords)[categoryIndex];
           const categoryWordsArray = categoryWords[category];
 
+          // change category name and category word div text contents
           row.style.display = "flex";
-          row.textContent = `${category}: ${categoryWordsArray.join(", ")}`;
+          let categoryName = row.children[0];
+          categoryName.textContent = category;
+          let categoryWordsDiv = row.children[1];
+          categoryWordsDiv.textContent = categoryWordsArray.join(", ");
         });
 
         grid = document.getElementById("wordsGrid");
@@ -130,8 +134,11 @@ const winGroup = (selectedWords, category) => {
 
   const row = document.getElementById("row-" + categoryIndex);
   row.style.display = "flex";
-  row.textContent =
-    category + ": " + selectedWords.map((word) => word.textContent).join(", ");
+  let categoryName = row.children[0];
+  categoryName.textContent = category;
+  let categoryWordsDiv = row.children[1];
+  let wordTexts = Array.from(selectedWords).map((word) => word.textContent);
+  categoryWordsDiv.textContent = wordTexts.join(", ");
 
   if (usedWords.length === words.length) {
     alert("You win!");
