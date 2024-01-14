@@ -1,4 +1,4 @@
-let mistakesRemaining = 5;
+let mistakesRemaining = 4;
 let usedWords = [];
 let repeatedCombinations = [];
 let intervalId;
@@ -180,7 +180,7 @@ const shuffleWords = () => {
 };
 
 const newGame = () => {
-  mistakesRemaining = 5;
+  mistakesRemaining = 4;
   usedWords = [];
   playing = true;
   repeatedCombinations = [];
