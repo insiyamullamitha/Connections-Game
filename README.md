@@ -18,7 +18,7 @@ This project is a remake of the New York Times (NYT) Connections Game. The game 
 * **HTML:** The game's structure and layout are defined using HTML.
 * **CSS:** Styling is applied using CSS for an appealing user interface.
 * **JavaScript:** The game logic is implemented using JavaScript to handle word selection, grouping, timer, and more.
-* **FontAwesome:** Icons from FontAwesome are utilized for visual elements.
+* **FontAwesome:** Icons from FontAwesome are utilised for visual elements.
   
 ## Setup 🚀
 
