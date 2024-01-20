@@ -4,6 +4,14 @@
 
 This project is a remake of the New York Times (NYT) Connections Game. The game challenges players to group words into four categories based on their meanings. The objective is to create connections between words belonging to the same category while racing against time and avoiding mistakes.
 
+## Getting Started 🚀
+
+1. Clone this repository:
+```
+git clone https://github.com/insiyamullamitha/Connections-Game.git
+```
+2. Open the **'index.html'** file in a web browser to start the game.
+
 ## Features ✨
 
 * **Categories:** The game includes four categories, each with a set of words.
@@ -19,14 +27,6 @@ This project is a remake of the New York Times (NYT) Connections Game. The game 
 * **CSS:** Styling is applied using CSS for an appealing user interface.
 * **JavaScript:** The game logic is implemented using JavaScript to handle word selection, grouping, timer, and more.
 * **FontAwesome:** Icons from FontAwesome are utilised for visual elements.
-  
-## Setup 🚀
-
-1. Clone the repository
-```
-git clone https://github.com/insiyamullamitha/Connections-Game.git
-```
-2. Open the **'index.html'** file in a web browser to start the game.
 
 ## Customisation 🛠️
 
